@@ -1,21 +1,21 @@
 <?php
-
 /**
  * @author: Vova Lando <vova.lando@gmail.com>
  * @package: LoanPaymentsCalculator
  * @subpackage:
- * @created: 31/08/2017 16:00
+ * @created: 05/09/2017 16:56
  */
+
 namespace cog\LoanPaymentsCalculator\PaymentSchedule;
 
 use cog\LoanPaymentsCalculator\Payment\Payment;
 use cog\LoanPaymentsCalculator\Period\Period;
 use cog\LoanPaymentsCalculator\Schedule\Schedule;
 
-class PaymentSchedule
+class SimplePaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
-     * @var Schedule
+     * @var Schedule[]
      */
     private $schedulePeriods;
 
@@ -75,7 +75,6 @@ class PaymentSchedule
     {
         $this->totalInterest = $totalInterest;
     }
-
 
     public function calculateSchedule()
     {

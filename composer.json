@@ -2,10 +2,11 @@
     "name": "cog/loan-payments-calculator",
     "description": "",
     "keywords": [
-        "Skeleton",
-        "PSR"
+        "Loan",
+        "Calculator",
+        "Interest",
+        "Annuity"
     ],
-    "homepage": "https://github.com/koriym/Koriym.PhpSkeleton",
     "license": "MIT",
     "authors": [
         {
