@@ -12,7 +12,11 @@ use cog\LoanPaymentsCalculator\Payment\Payment;
 use cog\LoanPaymentsCalculator\Period\Period;
 use cog\LoanPaymentsCalculator\Schedule\Schedule;
 
-class SimplePaymentScheduleCalculator implements PaymentScheduleCalculator
+/**
+ * Class FixedPrincipalPaymentScheduleCalculator
+ * @package cog\LoanPaymentsCalculator\PaymentSchedule
+ */
+class FixedPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
      * @var Schedule[]
@@ -76,6 +80,9 @@ class SimplePaymentScheduleCalculator implements PaymentScheduleCalculator
         $this->totalInterest = $totalInterest;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function calculateSchedule()
     {
         /**
@@ -103,6 +110,12 @@ class SimplePaymentScheduleCalculator implements PaymentScheduleCalculator
         return $payments;
     }
 
+    /**
+     * @param $remainingPrincipalAmount
+     * @param $dailyInterestRate
+     * @param $periodInDays
+     * @return mixed
+     */
     private function calculatePaymentInterest($remainingPrincipalAmount, $dailyInterestRate, $periodInDays)
     {
         return $remainingPrincipalAmount*$dailyInterestRate*$periodInDays;

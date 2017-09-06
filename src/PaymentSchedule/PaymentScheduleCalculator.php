@@ -9,7 +9,12 @@
 namespace cog\LoanPaymentsCalculator\PaymentSchedule;
 
 
+use cog\LoanPaymentsCalculator\Payment\Payment;
+
 interface PaymentScheduleCalculator
 {
+    /**
+     * @return Payment[]
+     */
     public function calculateSchedule();
 }
