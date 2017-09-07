@@ -103,8 +103,8 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
     }
 
     /**
-     * @param float $remainingPrincipalAmount
-     * @param float $dailyInterestRate
+     * @param float   $remainingPrincipalAmount
+     * @param float   $dailyInterestRate
      * @param integer $periodInDays
      * @return float
      */
