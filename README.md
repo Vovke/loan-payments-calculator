@@ -38,5 +38,34 @@ We use it as a container to describe the Loan period, where `startDate` is the d
 $schedule = new Schedule($startDate, $numberOfPeriods, $dateProvider)
 ```
 
-### PaymentSchedule
-`PaymentSchedule` class is used to create `payments` from the calculated `periods`, currently we doing all the payment calculations inside of it, but in the future we will separate it so we could use different strategies of calculation.
+### PaymentScheduleCalculator
+`PaymentScheduleCalculator` interface is a contract for implementing different ways of payments calculations. 
+
+#### EqualPrincipalPaymentScheduleCalculator
+`EqualPrincipalPaymentScheduleCalculator` is the simplest implementation of `PaymentScheduleCalculator` interface, generates payments with equal principal amount. 
+```
+    $startDate = new \DateTime('1984-08-08');
+    $principalAmount = 500;
+    $numberOfPeriods = 5;
+    $dailyInterestRate = 0.000383;
+    $dateProvider = new DateProvider(new ExactDayOfMonthStrategy(), new WeekendsProvider(), true);
+    $schedule = new Schedule($startDate, $numberOfPeriods, $dateProvider);
+    $schedulePeriods = $schedule->generatePeriods();
+
+    $paymentSchedule = new EqualPrincipalPaymentScheduleCalculator($schedulePeriods, $principalAmount, $dailyInterestRate);
+    $payments = $paymentSchedule->calculateSchedule();
+```
+
+#### AnnuityPaymentScheduleCalculator
+`AnnuityPaymentScheduleCalculator` generates payments with equal payments amount.
+```
+    ...
+    $paymentSchedule = new AnnuityPaymentScheduleCalculator($schedulePeriods, $principalAmount, $dailyInterestRate);
+    $payments = $paymentSchedule->calculateSchedule();
+```
+
+
+License
+----
+
+Released under the terms of the [MIT License](LICENSE).

@@ -13,10 +13,10 @@ use cog\LoanPaymentsCalculator\Period\Period;
 use cog\LoanPaymentsCalculator\Schedule\Schedule;
 
 /**
- * Class FixedPrincipalPaymentScheduleCalculator
+ * Class EqualPrincipalPaymentScheduleCalculator
  * @package cog\LoanPaymentsCalculator\PaymentSchedule
  */
-class FixedPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculator
+class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
      * @var Schedule[]
@@ -36,11 +36,6 @@ class FixedPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
     /**
      * @var float
      */
-    private $interestCapForPeriodInPercents;
-
-    /**
-     * @var float
-     */
     private $totalInterest;
 
     /**
@@ -48,19 +43,16 @@ class FixedPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
      * @param Period[] $schedulePeriods
      * @param float $principalAmount
      * @param float $dailyInterestRate
-     * @param float $interestCapForPeriodInPercents
      */
     public function __construct(
         $schedulePeriods,
         $principalAmount,
-        $dailyInterestRate,
-        $interestCapForPeriodInPercents = 0.0
+        $dailyInterestRate
     )
     {
         $this->schedulePeriods = $schedulePeriods;
         $this->principalAmount = $principalAmount;
         $this->dailyInterestRate = $dailyInterestRate;
-        $this->interestCapForPeriodInPercents = $interestCapForPeriodInPercents;
         $this->totalInterest = 0;
     }
 
