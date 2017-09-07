@@ -3,7 +3,7 @@
  * @author: Vova Lando <vova.lando@gmail.com>
  * @package: LoanPaymentsCalculator
  * @subpackage:
- * @created: 31/08/2017 16:55
+ * @created: 06/09/2017 13:31
  */
 
 namespace cog\LoanPayments\Calculator\tests\PaymentSchedule;
@@ -12,47 +12,48 @@ use cog\LoanPaymentsCalculator\DateProvider\DateDetermineStrategy\ExactDayOfMont
 use cog\LoanPaymentsCalculator\DateProvider\DateProvider;
 use cog\LoanPaymentsCalculator\DateProvider\HolidayProvider\WeekendsProvider;
 use cog\LoanPaymentsCalculator\Payment\Payment;
-use cog\LoanPaymentsCalculator\PaymentSchedule\EqualPrincipalPaymentScheduleCalculator;
+use cog\LoanPaymentsCalculator\PaymentSchedule\AnnuityPaymentScheduleCalculator;
 use cog\LoanPaymentsCalculator\Schedule\Schedule;
 use PHPUnit\Framework\TestCase;
 
-class EqualPrincipalPaymentScheduleCalculatorTest extends TestCase
+class AnnuityPaymentScheduleCalculatorTest extends TestCase
 {
-    public function testCreateFixedPrincipalPaymentSchedule()
+    public function testCreateAnnuityPaymentSchedule()
     {
         $startDate = new \DateTime('2016-08-08');
         $principalAmount = 500;
         $numberOfPeriods = 5;
+        $paymentAmount = 113.25680760233848;
         $dateProvider = new DateProvider(new ExactDayOfMonthStrategy(), new WeekendsProvider(), true);
         $schedule = new Schedule($startDate, $numberOfPeriods, $dateProvider);
         $schedulePeriods = $schedule->generatePeriods();
 
-        $paymentSchedule = new EqualPrincipalPaymentScheduleCalculator($schedulePeriods, $principalAmount, 0.001368925394);
+        $paymentSchedule = new AnnuityPaymentScheduleCalculator($schedulePeriods, $principalAmount, 0.001368925394);
         $payments = $paymentSchedule->calculateSchedule();
-        $paymentPrincipal = $principalAmount/$numberOfPeriods;
 
-        $this->assertSame($numberOfPeriods, count($payments));
-        $this->assertSame(64.476386057399992 , $paymentSchedule->getTotalInterest());
+        $this->assertSame($numberOfPeriods, $numberOfPeriods);
         for($i=0; $i<$numberOfPeriods; $i++) {
-            $this->assertSame($paymentPrincipal, $payments[$i]->getPrincipal());
+            $this->assertSame($paymentAmount, $payments[$i]->getPrincipal()+$payments[$i]->getInterest());
         }
 
         $this->printSchedule($payments);
     }
 
-    public function testOneMonthFixedPrincipalPaymentSchedule()
+    public function testCreateOneMonthAnnuityPaymentSchedule()
     {
         $startDate = new \DateTime('2016-08-08');
+        $principalAmount = 500;
+        $numberOfPeriods = 1;
+        $paymentAmount = 521.21834360699995;
         $dateProvider = new DateProvider(new ExactDayOfMonthStrategy(), new WeekendsProvider(), true);
-        $schedule = new Schedule($startDate, 1, $dateProvider);
+        $schedule = new Schedule($startDate, $numberOfPeriods, $dateProvider);
         $schedulePeriods = $schedule->generatePeriods();
 
-        $paymentSchedule = new EqualPrincipalPaymentScheduleCalculator($schedulePeriods, 500, 0.001368925394);
+        $paymentSchedule = new AnnuityPaymentScheduleCalculator($schedulePeriods, $principalAmount, 0.001368925394);
         $payments = $paymentSchedule->calculateSchedule();
-        $this->assertSame(1, count($payments));
-        $this->assertSame($startDate, $payments[0]->getPeriod()->startDate);
-        $this->assertSame(21.218343606999998, $paymentSchedule->getTotalInterest());
 
+        $this->assertSame($numberOfPeriods, $numberOfPeriods);
+        $this->assertSame($paymentAmount, $payments[0]->getPrincipal()+$payments[0]->getInterest());
         $this->printSchedule($payments);
     }
 
@@ -68,6 +69,7 @@ class EqualPrincipalPaymentScheduleCalculatorTest extends TestCase
             print("Period in days: " . $payments[$i]->getPeriod()->daysLength.  PHP_EOL);
             print("Payment Principal: ". $payments[$i]->getPrincipal().  PHP_EOL);
             print("Payment Interest: " . $payments[$i]->getInterest().  PHP_EOL);
+            print("Total Payment: " . ($payments[$i]->getPrincipal() + $payments[$i]->getInterest()) .  PHP_EOL);
             print("Principal left: " . $payments[$i]->getPrincipalBalanceLeft().  PHP_EOL);
         }
         print(PHP_EOL);

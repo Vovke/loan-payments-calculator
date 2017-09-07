@@ -3,22 +3,21 @@
  * @author: Vova Lando <vova.lando@gmail.com>
  * @package: LoanPaymentsCalculator
  * @subpackage:
- * @created: 05/09/2017 16:56
+ * @created: 06/09/2017 13:30
  */
 
 namespace cog\LoanPaymentsCalculator\PaymentSchedule;
 
+
 use cog\LoanPaymentsCalculator\Payment\Payment;
 use cog\LoanPaymentsCalculator\Period\Period;
+use cog\LoanPaymentsCalculator\Schedule\Schedule;
 
-/**
- * Class EqualPrincipalPaymentScheduleCalculator
- * @package cog\LoanPaymentsCalculator\PaymentSchedule
- */
-class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculator
+
+class AnnuityPaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
-     * @var Period[]
+     * @var Schedule[]
      */
     private $schedulePeriods;
 
@@ -33,41 +32,16 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
     private $dailyInterestRate;
 
     /**
-     * @var float
-     */
-    private $totalInterest;
-
-    /**
-     * PaymentSchedule constructor.
+     * AnnuityPaymentScheduleCalculator constructor.
      * @param Period[] $schedulePeriods
      * @param float    $principalAmount
      * @param float    $dailyInterestRate
      */
-    public function __construct(
-        $schedulePeriods,
-        $principalAmount,
-        $dailyInterestRate
-    ) {
+    public function __construct($schedulePeriods, $principalAmount, $dailyInterestRate)
+    {
         $this->schedulePeriods = $schedulePeriods;
         $this->principalAmount = $principalAmount;
         $this->dailyInterestRate = $dailyInterestRate;
-        $this->totalInterest = 0.0;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotalInterest()
-    {
-        return $this->totalInterest;
-    }
-
-    /**
-     * @param float $totalInterest
-     */
-    public function setTotalInterest($totalInterest)
-    {
-        $this->totalInterest = $totalInterest;
     }
 
     /**
@@ -80,35 +54,47 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
          */
         $payments = [];
         $numberOfPeriods = count($this->schedulePeriods);
-        $paymentPrincipal = $this->principalAmount/$numberOfPeriods;
+        $periodInterestRate = $this->calculateInterestPerPeriod();
+        $paymentAmount = $this->calculateAnnuityPaymentAmount($periodInterestRate);
         $totalPrincipalToPay = $this->principalAmount;
 
         for ($i=0; $i<$numberOfPeriods; $i++) {
             $payment = new Payment($this->schedulePeriods[$i]);
-            // Payment principal
-            $payment->setPrincipal($paymentPrincipal);
             // Payment interest
-            $paymentInterest = $this->calculatePaymentInterest($totalPrincipalToPay, $this->dailyInterestRate, $payment->getPeriod()->daysLength);
+            $paymentInterest = $totalPrincipalToPay * $periodInterestRate;
             $payment->setInterest($paymentInterest);
+            // Payment principal
+            $paymentPrincipal = $i == $numberOfPeriods-1 ? $totalPrincipalToPay : $paymentAmount - $paymentInterest;
+            $payment->setPrincipal($paymentPrincipal);
             // Payment totals
             $totalPrincipalToPay-=$paymentPrincipal;
             $payment->setPrincipalBalanceLeft($totalPrincipalToPay);
 
             $payments[] = $payment;
-            $this->totalInterest += $paymentInterest;
         }
 
         return $payments;
     }
 
     /**
-     * @param float   $remainingPrincipalAmount
-     * @param float   $dailyInterestRate
-     * @param integer $periodInDays
+     * @param $interestPerPeriod
+     * @return float|int
+     */
+    private function calculateAnnuityPaymentAmount($interestPerPeriod)
+    {
+        // Payment = InterestPerPeriod x TotalPrincipal / 1 - ( 1 + InterestPerPeriod)^(-numberOfPeriods)
+        return (($interestPerPeriod) *  $this->principalAmount) / (1 - pow(1 + ($interestPerPeriod), -count($this->schedulePeriods)));
+    }
+
+    /**
      * @return float
      */
-    private function calculatePaymentInterest($remainingPrincipalAmount, $dailyInterestRate, $periodInDays)
+    private function calculateInterestPerPeriod()
     {
-        return $remainingPrincipalAmount*$dailyInterestRate*$periodInDays;
+        $startDate = $this->schedulePeriods[0]->startDate;
+        $endDate = $this->schedulePeriods[count($this->schedulePeriods)-1]->endDate;
+        $daysDiff = $startDate->diff($endDate)->days;
+
+        return $this->dailyInterestRate * $daysDiff/count($this->schedulePeriods);
     }
 }

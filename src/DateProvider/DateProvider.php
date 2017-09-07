@@ -9,7 +9,7 @@
 namespace cog\LoanPaymentsCalculator\DateProvider;
 
 use cog\LoanPaymentsCalculator\DateProvider\DateDetermineStrategy\DateDetermineStrategyInterface;
-use cog\LoanPaymentsCalculator\DateProvider\HolidayProvider\HolidayProviderInterface;
+use cog\LoanPaymentsCalculator\DateProvider\HolidayProvider\HolidayProvider;
 
 class DateProvider
 {
@@ -19,7 +19,7 @@ class DateProvider
     private $dateDetermineStrategy;
 
     /**
-     * @var HolidayProviderInterface
+     * @var HolidayProvider
      */
     private $holidayProvider;
 
@@ -32,10 +32,10 @@ class DateProvider
      * DateProvider constructor.
      *
      * @param DateDetermineStrategyInterface $dateDetermineStrategy
-     * @param HolidayProviderInterface       $holidayProvider
+     * @param HolidayProvider                $holidayProvider
      * @param bool                           $shiftForward
      */
-    public function __construct(DateDetermineStrategyInterface $dateDetermineStrategy, HolidayProviderInterface $holidayProvider, $shiftForward)
+    public function __construct(DateDetermineStrategyInterface $dateDetermineStrategy, HolidayProvider $holidayProvider, $shiftForward)
     {
         $this->dateDetermineStrategy = $dateDetermineStrategy;
         $this->holidayProvider = $holidayProvider;

@@ -9,9 +9,9 @@
 namespace cog\LoanPaymentsCalculator\DateProvider\HolidayProvider;
 
 /**
- * Interface HolidayProviderInterface
+ * Interface HolidayProvider
  */
-interface HolidayProviderInterface
+interface HolidayProvider
 {
     /**
      * @param \DateTime $date

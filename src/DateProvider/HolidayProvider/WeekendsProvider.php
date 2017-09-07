@@ -10,7 +10,7 @@ namespace cog\LoanPaymentsCalculator\DateProvider\HolidayProvider;
 /**
  * Class WeekendsProvider - provides functionality to determine weekend based on php DateTime
  */
-class WeekendsProvider implements HolidayProviderInterface
+class WeekendsProvider implements HolidayProvider
 {
     /**
      * @param \DateTime $date
