@@ -8,7 +8,7 @@ LoanPaymentsCalculator is a programmer-oriented library for PHP. It is created t
 You may use [Composer](https://getcomposer.org/) to download and install LoanPaymentsCalculator as well as its dependencies.
 
 ```bash
-$ composer require cog/loan-payments-calculator
+$ composer require vovke/loan-payments-calculator
 ```
 
 ## Standards
