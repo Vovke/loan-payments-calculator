@@ -11,13 +11,12 @@ namespace cog\LoanPaymentsCalculator\PaymentSchedule;
 
 use cog\LoanPaymentsCalculator\Payment\Payment;
 use cog\LoanPaymentsCalculator\Period\Period;
-use cog\LoanPaymentsCalculator\Schedule\Schedule;
 
 
 class AnnuityPaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
-     * @var Schedule[]
+     * @var Period[]
      */
     private $schedulePeriods;
 
@@ -49,9 +48,6 @@ class AnnuityPaymentScheduleCalculator implements PaymentScheduleCalculator
      */
     public function calculateSchedule()
     {
-        /**
-         * @var Payment[] $payments
-         */
         $payments = [];
         $numberOfPeriods = count($this->schedulePeriods);
         $periodInterestRate = $this->calculateInterestPerPeriod();
@@ -77,8 +73,8 @@ class AnnuityPaymentScheduleCalculator implements PaymentScheduleCalculator
     }
 
     /**
-     * @param $interestPerPeriod
-     * @return float|int
+     * @param float $interestPerPeriod
+     * @return float
      */
     private function calculateAnnuityPaymentAmount($interestPerPeriod)
     {

@@ -11,6 +11,10 @@ namespace cog\LoanPaymentsCalculator\DateProvider\HolidayProvider;
 
 class NeverHolidayProvider implements HolidayProvider
 {
+    /**
+     * @inheritdoc
+     * @codeCoverageIgnore
+     */
     public function isHoliday(\DateTime $date)
     {
         return false;
