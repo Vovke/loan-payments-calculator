@@ -103,10 +103,10 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
     }
 
     /**
-     * @param $remainingPrincipalAmount
-     * @param $dailyInterestRate
-     * @param $periodInDays
-     * @return mixed
+     * @param float $remainingPrincipalAmount
+     * @param float $dailyInterestRate
+     * @param integer $periodInDays
+     * @return float
      */
     private function calculatePaymentInterest($remainingPrincipalAmount, $dailyInterestRate, $periodInDays)
     {
