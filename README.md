@@ -1,5 +1,5 @@
 # LoanPaymentsCalculator 
-[![Build Status](https://travis-ci.org/Vovke/loan-payments-calculator.svg?branch=master)](https://travis-ci.org/Vovke/loan-payments-calculator) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/?branch=master)
+[![Build Status](https://travis-ci.org/Vovke/loan-payments-calculator.svg?branch=master)](https://travis-ci.org/Vovke/loan-payments-calculator) [![Code Coverage](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Vovke/loan-payments-calculator/?branch=master)
 
 LoanPaymentsCalculator is a programmer-oriented library for PHP. It is created to provide Loan Payment Schedules for various inputs and strategies. Mainly developed for the short term loans it can be used for any other loan types as well.
 

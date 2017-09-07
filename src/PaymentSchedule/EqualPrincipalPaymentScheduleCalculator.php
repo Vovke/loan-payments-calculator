@@ -19,7 +19,7 @@ use cog\LoanPaymentsCalculator\Schedule\Schedule;
 class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculator
 {
     /**
-     * @var Schedule[]
+     * @var Period[]
      */
     private $schedulePeriods;
 
@@ -41,19 +41,18 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
     /**
      * PaymentSchedule constructor.
      * @param Period[] $schedulePeriods
-     * @param float $principalAmount
-     * @param float $dailyInterestRate
+     * @param float    $principalAmount
+     * @param float    $dailyInterestRate
      */
     public function __construct(
         $schedulePeriods,
         $principalAmount,
         $dailyInterestRate
-    )
-    {
+    ){
         $this->schedulePeriods = $schedulePeriods;
         $this->principalAmount = $principalAmount;
         $this->dailyInterestRate = $dailyInterestRate;
-        $this->totalInterest = 0;
+        $this->totalInterest = 0.0;
     }
 
     /**
@@ -81,10 +80,11 @@ class EqualPrincipalPaymentScheduleCalculator implements PaymentScheduleCalculat
          * @var Payment[] $payments
          */
         $payments = [];
-        $paymentPrincipal = $this->principalAmount/count($this->schedulePeriods);
+        $numberOfPeriods = count($this->schedulePeriods);
+        $paymentPrincipal = $this->principalAmount/$numberOfPeriods;
         $totalPrincipalToPay = $this->principalAmount;
 
-        for ($i=0; $i<count($this->schedulePeriods); $i++) {
+        for ($i=0; $i<$numberOfPeriods ; $i++) {
             $payment = new Payment($this->schedulePeriods[$i]);
             // Payment principal
             $payment->setPrincipal($paymentPrincipal);
