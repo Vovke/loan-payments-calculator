@@ -1,6 +1,6 @@
 {
     "name": "vovke/loan-payments-calculator",
-    "description": "",
+    "description": "PHP library for payment schedule calculations, using various strategies and configurations.",
     "keywords": [
         "Loan",
         "Calculator",
